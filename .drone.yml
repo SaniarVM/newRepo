@@ -1,0 +1,28 @@
+---
+kind: pipeline
+type: docker
+name: test
+
+trigger:
+  event:
+    - push
+
+steps:
+- name: jest
+  image: cfreak/jest
+  pull: always
+  commands:
+  - echo $0
+
+- name: NodeJest
+  image: cactus_es/node/chrome_headless
+  commands:
+  - |
+    echo install node.js package manager
+    npm install
+    echo getting node version
+    node --version
+    echo run jest test
+    npm test
+  depends_on: 
+    - jest
